@@ -10,8 +10,15 @@ const $cupcakeForm = $('form')
 
 async function listCupcakes (evt){
    res = await axios.get('/api/cupcakes')
-
+   for (let cupcake of res.data.cupcakes){
+    const $cupcakesList = $('#cupcakes-list')
+    const $li = $(`<li><a href=/cupcakes/${cupcake.id}>${cupcake.flavor}</a></li>`)
+    $cupcakesList.append($li)
 }
+}
+
+
+$('document').ready(listCupcakes)
 
 async function handleCreateEvt(evt) {
     console.log('clicked')
@@ -24,14 +31,13 @@ async function handleCreateEvt(evt) {
         image : $cupcakeImage.val()
     }
     res = await axios.post('/api/cupcakes', cupcake)
-    console.log(res)
+    const $cupcakesList = $('#cupcakes-list')
+    const $li = $(`<li><a href=/cupcakes/${res.data.cupcake.id}>${res.data.cupcake.flavor}</a></li>`)
+    $cupcakesList.append($li)
+    
 }
 
 $createCupcakeBtn.on('click', handleCreateEvt);
 
 
-for (let cupcake of res.data.cupcakes){
-    const $cupcakesList = $('#cupcakes-list')
-    const $li = $(`<li><a href=/cupcakes/${cupcake.id}>${cupcake.flavor}</a></li>`)
-    $cupcakesList.append($li)
-}
+
